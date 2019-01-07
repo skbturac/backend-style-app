@@ -1,5 +1,5 @@
 class StylistsController < ApplicationController
-  before_action :find_stylist, only: [:show, :update]
+  before_action :find_stylist, only: [:show, :edit, :update, :destroy]
   def index
     @stylists = Stylist.all
     render json: @stylists, status: :ok
@@ -28,10 +28,18 @@ class StylistsController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def destroy
+    @stylist.destroy
+    render json: @stylist, status: :destroyed
+  end
+
   private
 
   def stylist_params
-    params.permit(:firstName, :lastName, :locations_id)
+    params.permit(:firstName, :lastName)
   end
 
   def find_stylist

@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 2019_01_01_233405) do
   create_table "customers", force: :cascade do |t|
     t.string "firstName"
     t.string "lastName"
-    t.integer "locations_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -27,20 +26,22 @@ ActiveRecord::Schema.define(version: 2019_01_01_233405) do
     t.string "address"
     t.float "latitude"
     t.float "longitude"
+    t.integer "stylist_id"
+    t.integer "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "menus", force: :cascade do |t|
-    t.string "type"
+    t.string "service_name"
     t.integer "price"
+    t.integer "service_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "services", force: :cascade do |t|
-    t.integer "menu_id"
-    t.integer "sytlist_id"
+    t.integer "stylist_id"
     t.integer "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -49,7 +50,6 @@ ActiveRecord::Schema.define(version: 2019_01_01_233405) do
   create_table "stylists", force: :cascade do |t|
     t.string "firstName"
     t.string "lastName"
-    t.integer "locations_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

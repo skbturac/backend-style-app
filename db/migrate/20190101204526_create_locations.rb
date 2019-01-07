@@ -4,6 +4,8 @@ class CreateLocations < ActiveRecord::Migration[5.2]
       t.string :address
       t.float :latitude
       t.float :longitude
+      t.integer :stylist_id
+      t.integer :customer_id
 
       t.timestamps
     end

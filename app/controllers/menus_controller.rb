@@ -1,5 +1,5 @@
 class MenusController < ApplicationController
-  before_action :find_menu, only: [:show, :update]
+  before_action :find_menu, only: [:show, :edit, :update, :destroy]
   def index
     @menus = Menu.all
     render json: @menus, status: :ok
@@ -18,6 +18,8 @@ class MenusController < ApplicationController
     end
   end
 
+  def edit
+  end
 
   def update
     @menu.update(menu_params)
@@ -28,10 +30,16 @@ class MenusController < ApplicationController
     end
   end
 
+  def destroy
+    @menu.destroy
+    render json: @menu, status: :destroyed
+  end
+
+
   private
 
   def menu_params
-    params.permit(:menu_id, :sytlist_id, :customer_id)
+    params.permit(:service_name, :price, :service_id)
   end
 
   def find_menu

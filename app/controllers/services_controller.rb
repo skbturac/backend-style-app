@@ -1,5 +1,5 @@
 class ServicesController < ApplicationController
-  before_action :find_service, only: [:show, :update]
+  before_action :find_service, only: [:show, :edit, :update, :destroy]
   def index
     @services = Service.all
     render json: @services, status: :ok
@@ -18,6 +18,8 @@ class ServicesController < ApplicationController
     end
   end
 
+  def edit
+  end
 
   def update
     @service.update(service_params)
@@ -28,10 +30,15 @@ class ServicesController < ApplicationController
     end
   end
 
+  def destroy
+    @service.destroy
+    render json: @service, status: :destroyed
+  end
+
   private
 
   def service_params
-    params.permit(:menu_id, :sytlist_id, :customer_id)
+    params.permit(:stylist_id, :customer_id)
   end
 
   def find_service

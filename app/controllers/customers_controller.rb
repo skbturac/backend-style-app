@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  before_action :find_customer, only: [:show, :update]
+  before_action :find_customer, only: [:show, :edit, :update, :destroy]
   def index
     @customers = Customer.all
     render json: @customers, status: :ok
@@ -18,6 +18,8 @@ class CustomersController < ApplicationController
     end
   end
 
+  def edit
+  end
 
   def update
     @customer.update(customer_params)
@@ -27,11 +29,15 @@ class CustomersController < ApplicationController
       render json: { errors: @customer.errors.full_messages }, status: :unprocessible_entity
     end
   end
+  def destroy
+    @customer.destroy
+    render json: @customer, status: :destroyed
+  end
 
   private
 
   def customer_params
-    params.permit(:firstName, :lastName, :locations_id)
+    params.permit(:firstName, :lastName)
   end
 
   def find_customer

@@ -1,14 +1,12 @@
 class LocationsController < ApplicationController
-  def index
-   if params[:search].present?
-     @locations = Location.near(params[:search], 50, :order => :distance)
-   else
-     @locations = Location.all
-   end
+ def index
+  @locations = Location.all
+  render json: @locations, status: :ok
  end
 
  def show
    @location = Location.find(params[:id])
+   render json: @location, status: :accepted
  end
 
  def new
@@ -16,11 +14,12 @@ class LocationsController < ApplicationController
  end
 
  def create
-   @location = Location.new(allowed_params)
-   if @location.save
-     redirect_to @location, :notice => "Successfully created location."
+   @location = Location.new(location_params)
+   if @location.valid?
+     render json: @location, status: :created
    else
-     render :new
+     # render :new
+     render json: { errors: @location.errors.full_messages }, status: :unprocessible_entity
    end
  end
 
@@ -30,23 +29,22 @@ class LocationsController < ApplicationController
 
  def update
    @location = Location.find(params[:id])
-   if @location.update_attributes(allowed_params)
-     redirect_to @location, :notice  => "Successfully updated location."
+   if @location.save
+     render json: @customer, status: :accepted, :notice  => "Successfully updated location."
    else
-     render :edit
+     render json: { errors: @location.errors.full_messages }, status: :unprocessible_entity
    end
  end
 
  def destroy
    @location = Location.find(params[:id])
    @location.destroy
-
-   redirect_to locations_url, :notice => "Successfully destroyed location."
+   render json: @location, status: :destroyed
  end
 
  private
 
- def allowed_params
-   params.require(:location).permit(:id, :address, :latitude, :longitude)
+ def location_params
+   params.permit(:address, :latitude, :longitude, :stylist_id, :customer_id)
  end
 end
